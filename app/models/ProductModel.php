@@ -9,7 +9,7 @@ class ProductModel {
 
      public function getProducts() 
     { 
-        $query = "SELECT p.id, p.name, p.description, p.price, p.image, c.name as category_name 
+        $query = "SELECT p.id, p.name, p.description, p.price, c.name as category_name 
                   FROM " . $this->table_name . " p 
                   LEFT JOIN category c ON p.category_id = c.id"; 
         $stmt = $this->conn->prepare($query); 
@@ -36,28 +36,28 @@ class ProductModel {
     if (!empty($errors)) return $errors;
 
     // Thêm sản phẩm
-    $query = "INSERT INTO " . $this->table_name . " (name, description, price, category_id, image)
-              VALUES (:name, :description, :price, :category_id, :image)";
+    $query = "INSERT INTO " . $this->table_name . " (name, description, price, category_id)
+              VALUES (:name, :description, :price, :category_id)";
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':category_id', $category_id);
-    $stmt->bindParam(':image', $image);
+    // $stmt->bindParam(':image', $image);
 
     return $stmt->execute();
 }
 
 
     public function updateProduct($id, $name, $description, $price, $category_id, $image) {
-        $query = "UPDATE " . $this->table_name . " SET name = :name, description = :description, price = :price, category_id = :category_id WHERE id = :id, image = :image";
+        $query = "UPDATE " . $this->table_name . " SET name = :name, description = :description, price = :price, category_id = :category_id WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':category_id', $category_id);
         $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':image', $image);
+        // $stmt->bindParam(':image', $image);
         return $stmt->execute();
     }
 
